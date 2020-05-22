@@ -10,12 +10,12 @@ def index():
 
 @app.route('/about')
 def about():
-    return "Powered by AXA Switzerland"
+    return render_template('about.html')
 
 
 @app.route('/config')
 def config():
-    return "Placeholder for configuring labels"
+    return render_template('config.html')
 
 
 if __name__ == '__main__':
