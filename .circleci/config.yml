@@ -14,6 +14,8 @@ jobs:
         executor: default_env
         steps:
             - checkout
+            - restore_cache:
+                key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
             - run:
                 name: Install dependencies
                 command: |
@@ -21,10 +23,10 @@ jobs:
                     . venv/bin/activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
-            - run:
-                name: Save docker image
-                command: |
-                    docker save -o .
+            - save_cache:
+                      key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+                      paths:
+                        - "venv"
 
     test:
         executor: default_env
@@ -38,6 +40,7 @@ jobs:
             - run:
                 name: Run tests
                 command: |
+                    . venv/bin/activate
                     mkdir test_results
                     flake8 --exclude=venv* --statistics
                     pytest -v --junitxml=test_results/junit.xml --cov=app/app.py
