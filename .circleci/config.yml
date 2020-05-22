@@ -1,11 +1,10 @@
 version: 2.1
-jobs:
-    Build:
+
+executors:
+    default_env:
         docker:
             - image: circleci/python:3.7
-
         working_directory: ~/repo
-
         steps:
             - checkout
             - run:
@@ -15,11 +14,15 @@ jobs:
                     . venv/bin/activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
-    Test:
-        docker:
-            - image: circleci/python:3.7
 
-        working_directory: ~/repo
+jobs:
+    build:
+        executor: default_env
+        steps:
+            - checkout
+
+    test:
+        dexecutor: default_env
 
         steps:
             - checkout
@@ -36,10 +39,10 @@ jobs:
                 path: test_results
 
 workflows:
-    version: 2.1
+    version: 2
     dependencies:
         jobs:
-            - Build
-            - Test:
+            - build
+            - test:
                 requires:
-                    - Build
+                    - build
