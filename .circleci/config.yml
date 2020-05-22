@@ -21,8 +21,7 @@ jobs:
                     pip install -r requirements.txt
 
     test:
-        dexecutor: default_env
-
+        executor: default_env
         steps:
             - checkout
             - run:
@@ -36,6 +35,7 @@ jobs:
                 path: test_results
             - store_artifacts:
                 path: test_results
+
 
 workflows:
     version: 2
