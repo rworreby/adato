@@ -4,8 +4,6 @@ executors:
     default_env:
         docker:
             - image: circleci/python:3.7
-            environment:
-                PIPENV_VENV_IN_PROJECT: true
         working_directory: ~/repo
 
 
