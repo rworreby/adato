@@ -22,11 +22,11 @@ jobs:
                 name: Run tests
                 command: |
                     . venv/bin/activate
-                    mkdir tmp/test_results
+                    mkdir test_results
                     flake8 --exclude=venv* --statistics
-                    pytest -v --junitxml=tmp/test_results/junit.xml --cov=app/app.py
+                    pytest -v --junitxml=test_results/junit.xml --cov=app/app.py
             # Step 4: store results from tests
             - store_test_results:
-                path: tmp/test_results
+                path: test_results
             - store_artifacts:
-                path: tmp/test_results
+                path: test_results
