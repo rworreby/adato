@@ -31,11 +31,6 @@ jobs:
         steps:
             - checkout
             - run:
-                name: Load docker image
-                command: |
-                    docker load -i .
-
-            - run:
                 name: Run tests
                 command: |
                     . venv/bin/activate
