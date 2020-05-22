@@ -1,11 +1,24 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>adato</title>
-        <link rel="stylesheet" href="./static/css/main.css">
-    </head>
-    <body>
-        <h1>Allround Document Annotation Tool for Active Learning</h1>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block head %}
+<title>adato</title>
+{% endblock %}
+
+{% block body %}
+<br>
+<h1>Allround Document Annotation Tool for Active Learning</h1>
+<br>
+<main role="main">
+    <div class="jumbotron">
+        <div class="col-sm-8 mx-auto">
+            <h1>Annotate Documents</h1>
+            <p>This example is a quick exercise to illustrate how the navbar and its contents work. Some navbars extend the width of the viewport, others are confined within a <code>.container</code>. For positioning of navbars, checkout the <a href="/docs/4.5/examples/navbar-static/">top</a> and <a href="/docs/4.5/examples/navbar-fixed/">fixed top</a> examples.</p>
+            <p>At the smallest breakpoint, the collapse plugin is used to hide the links and show a menu button to toggle the collapsed content.</p>
+            <p>
+                <a class="btn btn-primary" href="/docs/4.5/components/navbar/" role="button">View navbar docs &raquo;</a>
+            </p>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
