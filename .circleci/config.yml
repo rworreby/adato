@@ -4,6 +4,8 @@ executors:
     default_env:
         docker:
             - image: circleci/python:3.7
+            environment:
+                PIPENV_VENV_IN_PROJECT: true
         working_directory: ~/repo
 
 
@@ -19,11 +21,20 @@ jobs:
                     . venv/bin/activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
+            - run:
+                name: Save docker image
+                command: |
+                    docker save -o .
 
     test:
         executor: default_env
         steps:
             - checkout
+            - run:
+                name: Load docker image
+                command: |
+                    docker load -i .
+
             - run:
                 name: Run tests
                 command: |
