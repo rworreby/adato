@@ -30,6 +30,8 @@ jobs:
         executor: default_env
         steps:
             - checkout
+            - restore_cache:
+                key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
             - run:
                 name: Run tests
                 command: |
