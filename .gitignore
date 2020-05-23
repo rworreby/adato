@@ -3,3 +3,4 @@ venv/
 .coverage
 data
 __pycache__/
+process.yml
