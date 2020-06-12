@@ -42,7 +42,7 @@ jobs:
             - store_artifacts:
                 path: test_results
 
-    linter:
+    tests:
         executor: default_env
         steps:
             - checkout
