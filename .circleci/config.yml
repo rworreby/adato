@@ -40,7 +40,7 @@ jobs:
                     flake8 --exclude=venv* --statistics --output-file linter-results
             - store_artifacts:
                 path: linter-results
-                destination: linter
+                destination: linter-results
 
 
     tests:
