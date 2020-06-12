@@ -39,7 +39,7 @@ jobs:
                     mkdir linter-results
                     flake8 --exclude=venv* --statistics > linter
             - store_artifacts:
-                path: test-results
+                path: linter-results
                 destination: linter
 
 
