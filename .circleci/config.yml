@@ -37,7 +37,7 @@ jobs:
                 command: |
                     . venv/bin/activate
                     mkdir linter-results
-                    flake8 --exclude=venv* --statistics > /linter-results
+                    flake8 --exclude=venv* --statistics --output-file linter-results
             - store_artifacts:
                 path: linter-results
                 destination: linter
