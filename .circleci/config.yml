@@ -6,7 +6,6 @@ executors:
             - image: circleci/python:3.7
         working_directory: ~/repo
 
-
 jobs:
     build:
         executor: default_env
@@ -41,15 +40,14 @@ jobs:
                 path: linter-results
                 destination: linter-results
 
-
-    tests:
+    test_app:
         executor: default_env
         steps:
             - checkout
             - restore_cache:
                 key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
             - run:
-                name: Run tests
+                name: Run tests for app
                 command: |
                     . venv/bin/activate
                     mkdir test-results
@@ -60,6 +58,23 @@ jobs:
                 path: test-results
                 destination: tests
 
+    test_preprocessing:
+        executor: default_env
+        steps:
+            - checkout
+            - restore_cache:
+                key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+            - run:
+                name: Run tests for preprocessing pipeline
+                command: |
+                    . venv/bin/activate
+                    mkdir test-results
+                    pytest -v --junitxml=test-results/junit.xml --cov=preprocessing/
+            - store_test_results:
+                path: test-results
+            - store_artifacts:
+                path: test-results
+                destination: tests
 
 workflows:
     version: 2
@@ -69,6 +84,9 @@ workflows:
             - linter:
                 requires:
                     - build
-            - tests:
+            - test_app:
+                requires:
+                    - build
+            - test_preprocessing:
                 requires:
                     - build
