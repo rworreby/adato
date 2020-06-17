@@ -70,7 +70,8 @@ jobs:
                 command: |
                     . venv/bin/activate
                     mkdir test-results
-                    pytest -v --junitxml=test-results/junit.xml --cov=preprocessing/
+                    pytest -v --junitxml=test-results/junit.xml \
+                        --cov=preprocessing/ --hypothesis-show-statistics
             - store_test_results:
                 path: test-results
             - store_artifacts:
