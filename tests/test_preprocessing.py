@@ -9,7 +9,7 @@ from hypothesis.extra.pandas import data_frames, column
 import re
 import pandas as pd
 
-from ..preprocessing.data_cleaning import clean_hash39
+from data_cleaning import clean_hash39
 
 
 # for i in range(10):
