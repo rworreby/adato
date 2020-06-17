@@ -4,7 +4,7 @@ executors:
     default_env:
         docker:
             - image: circleci/python:3.7
-        working_directory: ~/adato
+        working_directory: ~/repo
 
 jobs:
     build:
