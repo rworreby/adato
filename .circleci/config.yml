@@ -4,7 +4,7 @@ executors:
     default_env:
         docker:
             - image: circleci/python:3.7
-        working_directory: ~/repo
+        working_directory: ~/adato
 
 jobs:
     build:
@@ -40,23 +40,23 @@ jobs:
                 path: linter-results
                 destination: linter-results
 
-    test_app:
-        executor: default_env
-        steps:
-            - checkout
-            - restore_cache:
-                key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-            - run:
-                name: Run tests for app
-                command: |
-                    . venv/bin/activate
-                    mkdir test-results
-                    pytest -v --junitxml=test-results/junit.xml --cov=app/
-            - store_test_results:
-                path: test-results
-            - store_artifacts:
-                path: test-results
-                destination: tests
+    # test_app:
+    #     executor: default_env
+    #     steps:
+    #         - checkout
+    #         - restore_cache:
+    #             key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+    #         - run:
+    #             name: Run tests for app
+    #             command: |
+    #                 . venv/bin/activate
+    #                 mkdir test-results
+    #                 pytest -v --junitxml=test-results/junit.xml --cov=app/
+    #         - store_test_results:
+    #             path: test-results
+    #         - store_artifacts:
+    #             path: test-results
+    #             destination: tests
 
     test_preprocessing:
         executor: default_env
