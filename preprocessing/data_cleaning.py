@@ -1,6 +1,3 @@
-import re
-
-import numpy as np
 import pandas as pd
 
 
@@ -16,8 +13,8 @@ def clean_multiple_whitespace(df):
 
 def clean_trailing_leading(df):
     df.description = df.description.str.replace(' #39;', "'")
-    df.description = df.description.str.replace(r'\\', ' ') # 2
-    df.description = df.description.str.replace(r'\\\\', ' ') # 180
+    df.description = df.description.str.replace(r'\\', ' ')     # 2
+    df.description = df.description.str.replace(r'\\\\', ' ')   # 180
 
     df.description = df.description.str.strip(r' \\\n\t\'\"')
 
