@@ -10,32 +10,33 @@ from hypothesis import given, example, assume
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-# from preprocessing.data_cleaning import clean_hash39
+from preprocessing.data_cleaning import clean_hash39
 
 
 # for i in range(10):
 #     print(
 #         st.text(
 #             alphabet=string.ascii_letters+r' /\\?-^\'"_:',
-#             min_size=5,
+#             min_size=20,
 #         ).example()
 #     )
-#
-# regex = re.compile(r'(\w+\s){5}', re.ASCII)
+
+# regex = re.compile(r'(\w{5}\s){5}', re.ASCII)
 # for i in range(10):
 #     print(
 #         st.from_regex(regex).example()
 #     )
 
 # for i in range(10):
-#     print(data_frames([column('description',
-#                         elements=st.text(
-#                             alphabet=string.ascii_letters+r' #;/\\?-^\'"_:'
-#                         ),
-#                         unique=True)
-#                 ]).example())
+#     print(data_frames([column(
+#         'description',
+#         elements=st.text(
+#             alphabet=string.ascii_letters+r' #;/\\?-^\'"_:'
+#         ),
+#         unique=True)
+#     ]).example())
 
-# regex = re.compile(r'\w{3,5}\s+ #39;.*', re.ASCII)
+# regex = re.compile(r'.* #39;.*', re.ASCII)    # \w{4,7}\s+
 # for i in range(10):
 #     print(
 #         st.from_regex(regex).example()
@@ -54,7 +55,7 @@ def clean_hash39(df):
     return df
 
 
-regex = re.compile(r'\w+\s+ #39;.*', re.ASCII)
+regex = re.compile(r'.* #39;.*', re.ASCII)
 
 
 @given(input_df=data_frames(
