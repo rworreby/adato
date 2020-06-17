@@ -3,27 +3,16 @@ Unit tests for the preprocessing pipeline
 """
 
 import re
-import sys
+# import string
 import pandas as pd
 
 from hypothesis import given, example, assume
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-from preprocessing.data_cleaning import clean_hash39
+# from preprocessing.data_cleaning import clean_hash39
 
-sys.path.append('~/repo/preprocessing/data_cleaning/')
 
-# for i in range(10):
-#     print(
-#         st.text(
-#             st.sampled_from(
-#                 r'\\_/?:^\'"[a-zA-Z0-9]',
-#             ),
-#             min_size=5,
-#         ).example()
-#     )
-#
 # for i in range(10):
 #     print(
 #         st.text(
@@ -46,11 +35,12 @@ sys.path.append('~/repo/preprocessing/data_cleaning/')
 #                         unique=True)
 #                 ]).example())
 
-# regex = re.compile(r'.* #39;.*', re.ASCII)
+# regex = re.compile(r'\w{3,5}\s+ #39;.*', re.ASCII)
 # for i in range(10):
 #     print(
 #         st.from_regex(regex).example()
 #     )
+
 
 # @given(data_frames([column('title',
 #                     elements=st.text(
@@ -59,8 +49,12 @@ sys.path.append('~/repo/preprocessing/data_cleaning/')
 #                     unique=True)
 #                     ]))
 
+def clean_hash39(df):
+    df.title = df.title.str.replace(' #39;', "'")
+    return df
 
-regex = re.compile(r'.* #39;.*', re.ASCII)
+
+regex = re.compile(r'\w+\s+ #39;.*', re.ASCII)
 
 
 @given(input_df=data_frames(
@@ -72,7 +66,7 @@ regex = re.compile(r'.* #39;.*', re.ASCII)
 ))
 @example(input_df=pd.DataFrame(
     {'title':
-        ['Robin #39;s forever super string test.', 'String 1']}
+        ['Robin #39; forever super string test.', 'String 1']}
 ))
 def test_clean_hash39(input_df):
     assume(input_df.shape[0] > 0)
