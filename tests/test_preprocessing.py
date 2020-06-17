@@ -10,7 +10,7 @@ from hypothesis import given, example, assume
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-from preprocessing.data_cleaning import clean_hash39
+# from preprocessing.data_cleaning import clean_hash39
 
 
 # for i in range(10):
@@ -49,6 +49,10 @@ from preprocessing.data_cleaning import clean_hash39
 #                     ),
 #                     unique=True)
 #                     ]))
+
+def clean_hash39(df):
+    df.title = df.title.str.replace(' #39;', "'")
+    return df
 
 
 regex = re.compile(r'.* #39;.*', re.ASCII)
