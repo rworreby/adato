@@ -16,6 +16,7 @@ jobs:
             - run:
                 name: Install dependencies
                 command: |
+                    echo 'export PATH=/home/circleci/repo/:$PATH' >> $BASH_ENV
                     echo 'export PATH=/home/circleci/repo/preprocessing:$PATH' >> $BASH_ENV
                     python3 -m venv venv
                     . venv/bin/activate
