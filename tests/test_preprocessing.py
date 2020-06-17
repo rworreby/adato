@@ -51,7 +51,7 @@ from hypothesis.extra.pandas import data_frames, column
 #                     ]))
 
 def clean_hash39(df):
-    # df.title = df.title.str.replace(' #39;', "'")
+    df.title = df.title.str.replace(' #39;', "'")
     return df
 
 
