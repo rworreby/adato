@@ -50,10 +50,6 @@ from preprocessing.data_cleaning import clean_hash39
 #                     unique=True)
 #                     ]))
 
-def clean_hash39(df):
-    df.title = df.title.str.replace(' #39;', "'")
-    return df
-
 
 regex = re.compile(r'.* #39;.*', re.ASCII)
 
