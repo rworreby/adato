@@ -5,6 +5,8 @@ executors:
         docker:
             - image: circleci/python:3.7
         working_directory: ~/repo
+        environment:
+            BASH_ENV: ~/.bashrc
 
 jobs:
     build:
@@ -16,7 +18,8 @@ jobs:
             - run:
                 name: Install dependencies
                 command: |
-                    export PATH=$PATH:/home/circleci/repo/preprocessing/
+                # export PATH=$PATH:/home/circleci/repo/preprocessing/
+                    echo 'export PATH=/home/circleci/repo/preprocessing:$PATH' >> $BASH_ENV
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install --upgrade pip
