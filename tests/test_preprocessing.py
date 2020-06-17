@@ -2,15 +2,17 @@
 Unit tests for the preprocessing pipeline
 """
 
+import re
+import sys
+import pandas as pd
+
 from hypothesis import given, example, assume
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-import re
-import pandas as pd
+from preprocessing.data_cleaning import clean_hash39
 
-from .preprocessing.data_cleaning import clean_hash39
-
+sys.path.append('~/repo/preprocessing/data_cleaning/')
 
 # for i in range(10):
 #     print(
