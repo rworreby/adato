@@ -1,5 +1,7 @@
-from .data_cleaning import clean_hashes, clean_trailing_leading
-from .data_cleaning import clean_title_remarks, clean_description_remarks
+from .data_cleaning import clean_hashes
+from .data_cleaning import clean_trailing_leading
+from .data_cleaning import clean_title_remarks
+from .data_cleaning import clean_description_remarks
 
 __all__ = [
     'clean_hashes',
