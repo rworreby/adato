@@ -10,7 +10,7 @@ from hypothesis import given, example, assume, settings, HealthCheck
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-from preprocessing.data_cleaning import DataCleaner
+from adato.preprocessing.data_cleaning import DataCleaner
 
 
 # Create hypothesis regex examples:
