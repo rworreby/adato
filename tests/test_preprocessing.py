@@ -10,10 +10,7 @@ from hypothesis import given, example, assume, settings, HealthCheck
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-from preprocessing.data_cleaning import clean_hashes
-from preprocessing.data_cleaning import clean_trailing_leading
-from preprocessing.data_cleaning import clean_title_remarks
-from preprocessing.data_cleaning import clean_description_remarks
+from preprocessing.data_cleaning import DataCleaner
 
 
 # Create hypothesis regex examples:
@@ -48,12 +45,13 @@ regex = re.compile(r'.* #39;.*#36;.*', re.ASCII)
 ))
 def test_clean_hashes(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = clean_hashes(input_df)
+    cleaned_df = DataCleaner(input_df)
+    cleaned_df.clean_hashes()
 
     # Example case breaking the assertion
     # cleaned_df.loc[0] = 'This is Robin #39;s wrong example.'
 
-    for _, row in cleaned_df.iterrows():
+    for _, row in cleaned_df.df.iterrows():
         assert ' #39;' not in row.title
         assert '#36;' not in row.title
         assert ' #39;' not in row.description
@@ -101,12 +99,13 @@ regex = re.compile(r'\s?"*.*\\.*\\\\.*\s{2,5}.*\n?', re.ASCII)
 ))
 def test_clean_trailing_leading(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = clean_trailing_leading(input_df)
+    cleaned_df = DataCleaner(input_df)
+    cleaned_df.clean_trailing_leading()
 
     # Example case breaking the assertion
     # cleaned_df.loc[0, 'title'] = '\tTab started string'
 
-    for _, row in cleaned_df.iterrows():
+    for _, row in cleaned_df.df.iterrows():
         if row.title:
             assert r'  ' not in row.title
             assert r'\\' not in row.title
@@ -146,7 +145,8 @@ regex = re.compile(r'^.*\s\((\w+\s\w+)?(\w+)?\)$', re.ASCII)
 ))
 def test_clean_title_remarks(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = clean_title_remarks(input_df)
+    cleaned_df = DataCleaner(input_df)
+    cleaned_df.clean_title_remarks()
 
     # Example cases breaking the assertion
     # cleaned_df.loc[0] = 'Some Place like this (Blick)'
@@ -154,7 +154,7 @@ def test_clean_title_remarks(input_df):
     regexes = [
                 r'^.*\s\(\w+(\s\w+)?\)$',
                 ]
-    for _, row in cleaned_df.iterrows():
+    for _, row in cleaned_df.df.iterrows():
         for regex in regexes:
             assert not re.match(regex, row.title)
 
@@ -206,7 +206,8 @@ regex = re.compile(r'''^
 ))
 def test_clean_description_remarks(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = clean_description_remarks(input_df)
+    cleaned_df = DataCleaner(input_df)
+    cleaned_df.clean_description_remarks()
 
     # Example cases breaking the assertion
     # cleaned_df.loc[0] = 'Some, Place (Blick) - Yet another news ...'
@@ -219,6 +220,6 @@ def test_clean_description_remarks(input_df):
                 r'^\w+,\s\w+\s(\(\w+\)\s)?-{1,2}\s.*',  # Word, Word -
                 r'^\w+\.\w+\s(\(\w+\)\s)?-{1,2}\s.*',   # Word.Word -
                 ]
-    for _, row in cleaned_df.iterrows():
+    for _, row in cleaned_df.df.iterrows():
         for regex in regexes:
             assert not re.match(regex, row.description)
