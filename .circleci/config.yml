@@ -23,7 +23,7 @@ jobs:
                     pip install --upgrade pip
                     pip install -e .
                     pip install -r requirements.txt
-                    python setup.py
+                    python setup.py egg_info
             - save_cache:
                       key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
                       paths:
