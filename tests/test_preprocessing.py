@@ -10,7 +10,7 @@ from hypothesis import given, example, assume, settings, HealthCheck
 from hypothesis import strategies as st
 from hypothesis.extra.pandas import data_frames, column
 
-from ..adato.preprocessing.data_cleaning import DataCleaner
+from adato.preprocessing import data_cleaning
 
 
 # Create hypothesis regex examples:
@@ -45,7 +45,7 @@ regex = re.compile(r'.* #39;.*#36;.*', re.ASCII)
 ))
 def test_clean_hashes(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = DataCleaner(input_df)
+    cleaned_df = data_cleaning.DataCleaner(input_df)
     cleaned_df.clean_hashes()
 
     # Example case breaking the assertion
@@ -99,7 +99,7 @@ regex = re.compile(r'\s?"*.*\\.*\\\\.*\s{2,5}.*\n?', re.ASCII)
 ))
 def test_clean_trailing_leading(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = DataCleaner(input_df)
+    cleaned_df = data_cleaning.DataCleaner(input_df)
     cleaned_df.clean_trailing_leading()
 
     # Example case breaking the assertion
@@ -145,7 +145,7 @@ regex = re.compile(r'^.*\s\((\w+\s\w+)?(\w+)?\)$', re.ASCII)
 ))
 def test_clean_title_remarks(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = DataCleaner(input_df)
+    cleaned_df = data_cleaning.DataCleaner(input_df)
     cleaned_df.clean_title_remarks()
 
     # Example cases breaking the assertion
@@ -206,7 +206,7 @@ regex = re.compile(r'''^
 ))
 def test_clean_description_remarks(input_df):
     assume(input_df.shape[0] > 0)
-    cleaned_df = DataCleaner(input_df)
+    cleaned_df = data_cleaning.DataCleaner(input_df)
     cleaned_df.clean_description_remarks()
 
     # Example cases breaking the assertion
