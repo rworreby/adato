@@ -1,15 +1,11 @@
-import string
-
-# import numpy as np
 import pandas as pd
+from flair.data import Corpus
+from flair.datasets import CSVClassificationCorpus
+from flair.embeddings import WordEmbeddings, DocumentRNNEmbeddings
+from flair.models import TextClassifier
+from flair.trainers import ModelTrainer
 
 # import keras
-
-# import spacy
-# from spacy.lang.en import English
-
-# STOPLIST = set(stopwords.words('english') + list(ENGLISH_STOP_WORDS))
-SYMBOLS = " ".join(string.punctuation).split(" ") + ["-", "...", "”", "”"]
 
 
 def import_data():
@@ -32,29 +28,43 @@ def import_data():
     return df
 
 
-"""
-def tokenize_text(sample):
-    # tokens = parser(sample)
-    lemmas = []
-    for tok in tokens:
-        lemmas.append(tok.lemma_.lower().strip() if tok.lemma_ != "-PRON-"
-                      else tok.lower_)
-
-    tokens = lemmas
-    tokens = [tok for tok in tokens if tok not in STOPLIST]
-    tokens = [tok for tok in tokens if tok not in SYMBOLS]
-    return tokens
-"""
-
-
 def main():
-    df = import_data()
-    print(df)
+    # df = import_data()
+    # print(df)
 
-    # nlp = spacy.load('en_core_web_sm')
-    # nlp(df)
+    data_folder = './adato/data/'
+    column_name_map = {0: 'label_topic', 2: 'text'}
 
-    # print(tokenize_text(nlp(df.loc[0, 'description'])))
+    corpus: Corpus = CSVClassificationCorpus(data_folder,
+                                             column_name_map,
+                                             train_file='cleaned_train.csv',
+                                             test_file='cleaned_test.csv',
+                                             skip_header=True,
+                                             delimiter=',',
+                                             )
+
+    print(corpus)
+    print(corpus.train[0])
+
+    label_dict = corpus.make_label_dictionary()
+
+    word_embeddings = [WordEmbeddings('glove')]
+    document_embeddings = DocumentRNNEmbeddings(word_embeddings,
+                                                hidden_size=256,
+                                                )
+
+    classifier = TextClassifier(document_embeddings,
+                                label_dictionary=label_dict,
+                                )
+
+    trainer = ModelTrainer(classifier, corpus)
+
+    trainer.train('adato/model/classifiers/flair/',
+                  learning_rate=0.1,
+                  mini_batch_size=32,
+                  anneal_factor=0.5,
+                  patience=5,
+                  max_epochs=150)
 
 
 if __name__ == '__main__':
