@@ -24,6 +24,7 @@ from adato.preprocessing import data_cleaning
 regex = re.compile(r'.* #39;.*#36;.*', re.ASCII)
 
 
+@settings(suppress_health_check=(HealthCheck.too_slow,))
 @given(input_df=data_frames(
     [column(
         'title',
