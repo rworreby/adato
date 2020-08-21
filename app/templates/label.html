@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>adato</title>
+{% endblock %}
+
+{% block body %}
+<br>
+<h1>Allround Document Annotation Tool for Active Learning</h1>
+<br>
+<main role="main">
+    <div class="jumbotron">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-9 mx-auto">
+                    <h3>Predicted: {{}}</h3>
+                    <textarea class="form-control" id="displayDocText" value="" rows="15">{{data}}</textarea>
+
+                    <br>
+
+                    <p>
+                        <a class="btn btn-info btn-large"
+                           href={{url_for('label', number=data_counter-1)}}
+                           role="button">
+                        Previous Document
+                        </a>
+                        <a class="btn btn-info btn-large float-right"
+                           href={{url_for('label', number=data_counter+1)}}
+                           role="button">
+                        Next Document
+                        </a>
+                    </p>
+                </div>
+                <div class="col-sm mx-auto">
+                    <p>
+                        <a class="btn btn-success btn-large" href="" role="button">Accept Label</a>
+                        <a class="btn btn-danger btn-large" href="" role="button">Decline Label</a>
+                        <a class="btn btn-warning btn-large" href="" role="button">Skip Document</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
