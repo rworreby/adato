@@ -1,3 +1,5 @@
+from subprocess import call
+
 import pandas as pd
 from hyperopt import hp
 from flair.data import Corpus
@@ -97,6 +99,8 @@ def main():
     #               anneal_factor=0.5,
     #               patience=5,
     #               max_epochs=150)
+
+    call(["python", "app/app.py"])
 
 
 if __name__ == '__main__':
