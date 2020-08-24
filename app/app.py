@@ -6,6 +6,7 @@ from flair.models import TextClassifier
 app = Flask(__name__)
 
 labeling_counter = 0
+LABEL_CLASSES = {'1': 'World', '2': 'Sports', '3': 'Business', '4': 'Sci/Tech'}
 
 path = './adato/data/'
 train_df = pd.read_csv(
@@ -14,7 +15,7 @@ train_df = pd.read_csv(
     names=['classid', 'title', 'description'],
 )
 
-classifier = TextClassifier.load('adato/model/classifiers/flair/final-model.pt')
+classifier = TextClassifier.load('adato/model/classifiers/flair/best-model.pt')
 
 
 @app.route('/')
@@ -33,7 +34,7 @@ def label(number=0):
     return render_template('label.html',
                            data=train_df.iloc[labeling_counter]['description'],
                            data_counter=labeling_counter,
-                           label=sentence.labels,
+                           label=LABEL_CLASSES[str(sentence.labels[0])[0]],
                            )
 
 
