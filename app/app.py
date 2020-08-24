@@ -1,5 +1,7 @@
 import pandas as pd
 from flask import Flask, render_template, redirect, url_for
+from flair.data import Sentence
+from flair.models import TextClassifier
 
 app = Flask(__name__)
 
@@ -12,6 +14,8 @@ train_df = pd.read_csv(
     names=['classid', 'title', 'description'],
 )
 
+classifier = TextClassifier.load('adato/model/classifiers/flair/final-model.pt')
+
 
 @app.route('/')
 def index():
@@ -22,9 +26,14 @@ def index():
 @app.route('/label/<number>')
 def label(number=0):
     labeling_counter = int(number)
+
+    sentence = Sentence(train_df.iloc[labeling_counter]['description'])
+    classifier.predict(sentence)
+
     return render_template('label.html',
                            data=train_df.iloc[labeling_counter]['description'],
                            data_counter=labeling_counter,
+                           label=sentence.labels,
                            )
 
 
