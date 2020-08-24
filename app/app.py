@@ -35,6 +35,7 @@ def label(number=0):
                            data=train_df.iloc[labeling_counter]['description'],
                            data_counter=labeling_counter,
                            label=LABEL_CLASSES[str(sentence.labels[0])[0]],
+                           labels=LABEL_CLASSES,
                            )
 
 
