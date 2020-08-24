@@ -32,10 +32,16 @@
                     </p>
                 </div>
                 <div class="col-sm mx-auto">
-                    <p>
-                        <a class="btn btn-success btn-large" href="" role="button">Accept Label</a>
-                        <a class="btn btn-danger btn-large" href="" role="button">Decline Label</a>
-                        <a class="btn btn-warning btn-large" href="" role="button">Skip Document</a>
+                    <p style="margin-top: 2.65em">
+                        <a class="btn btn-success btn-large" style="width: 130px" href="" role="button">Accept Predicted Label</a>
+                        <div class="btn-group-vertical" style="margin-top: 2.65em">
+                            {% for _, label_name in labels.items() %}
+                                <button type="button" class="btn btn-primary button-large" style="width: 130px">{{label_name}}</button>
+                            {% endfor %}
+                        </div>
+                        <a class="btn btn-danger btn-large" style="width: 130px" href=""
+                           role="button">Accept User Label
+                        </a>
                     </p>
                 </div>
             </div>
