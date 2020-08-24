@@ -1,3 +1,5 @@
+import argparse
+
 import pandas as pd
 from hyperopt import hp
 from flair.data import Corpus
@@ -7,10 +9,8 @@ from flair.embeddings import FlairEmbeddings
 from flair.hyperparameter.param_selection import SearchSpace, Parameter
 from flair.hyperparameter.param_selection import TextClassifierParamSelector
 from flair.hyperparameter.param_selection import OptimizationValue
-# from flair.models import TextClassifier
-# from flair.trainers import ModelTrainer
-
-# import keras
+from flair.models import TextClassifier
+from flair.trainers import ModelTrainer
 
 
 def import_data():
@@ -34,6 +34,15 @@ def import_data():
 
 
 def main():
+    my_parser = argparse.ArgumentParser(add_help=True)
+    my_parser.add_argument('-ft',
+                           '--finetuning',
+                           action='store',
+                           type=int,
+                           required=False)
+
+    args = my_parser.parse_args()
+
     # df = import_data()
     # print(df)
 
@@ -56,47 +65,64 @@ def main():
                                                 hidden_size=256,
                                                 )
 
-    search_space = SearchSpace()
-    search_space.add(Parameter.EMBEDDINGS, hp.choice, options=[
-        [WordEmbeddings('en')],
-        [FlairEmbeddings('news-forward'), FlairEmbeddings('news-backward')],
-        [document_embeddings],
-    ])
-    search_space.add(Parameter.HIDDEN_SIZE, hp.choice, options=[32, 64, 128])
-    search_space.add(Parameter.RNN_LAYERS, hp.choice, options=[1, 2])
-    search_space.add(Parameter.DROPOUT, hp.uniform, low=0.0, high=0.5)
-    search_space.add(Parameter.LEARNING_RATE,
-                     hp.choice,
-                     options=[0.05, 0.1, 0.15, 0.2]
-                     )
-    search_space.add(Parameter.MINI_BATCH_SIZE, hp.choice, options=[8, 16, 32])
+    if args.finetuning:
+        search_space = SearchSpace()
+        search_space.add(Parameter.EMBEDDINGS, hp.choice, options=[
+            [WordEmbeddings('en')],
+            [FlairEmbeddings('news-forward'),
+             FlairEmbeddings('news-backward'),
+             ],
+            [document_embeddings],
+        ])
+        search_space.add(Parameter.HIDDEN_SIZE,
+                         hp.choice,
+                         options=[32, 64, 128]
+                         )
+        search_space.add(Parameter.RNN_LAYERS,
+                         hp.choice,
+                         options=[1, 2]
+                         )
+        search_space.add(Parameter.DROPOUT,
+                         hp.uniform,
+                         low=0.0,
+                         high=0.5
+                         )
+        search_space.add(Parameter.LEARNING_RATE,
+                         hp.choice,
+                         options=[0.05, 0.1, 0.15, 0.2]
+                         )
+        search_space.add(Parameter.MINI_BATCH_SIZE,
+                         hp.choice,
+                         options=[8, 16, 32]
+                         )
 
-    param_selector = TextClassifierParamSelector(
-        corpus,
-        False,
-        'adato/model/classifiers/hyperopt/',
-        'lstm',
-        max_epochs=40,
-        training_runs=3,
-        optimization_value=OptimizationValue.DEV_SCORE
-    )
+        param_selector = TextClassifierParamSelector(
+            corpus,
+            False,
+            'adato/model/classifiers/hyperopt/',
+            'lstm',
+            max_epochs=40,
+            training_runs=3,
+            optimization_value=OptimizationValue.DEV_SCORE
+        )
 
-    param_selector.optimize(search_space, max_evals=20)
+        param_selector.optimize(search_space, max_evals=2)
 
-    # label_dict = corpus.make_label_dictionary()
+    else:
+        label_dict = corpus.make_label_dictionary()
 
-    # classifier = TextClassifier(document_embeddings,
-    #                             label_dictionary=label_dict,
-    #                             )
-    #
-    # trainer = ModelTrainer(classifier, corpus)
-    #
-    # trainer.train('adato/model/classifiers/flair/',
-    #               learning_rate=0.1,
-    #               mini_batch_size=32,
-    #               anneal_factor=0.5,
-    #               patience=5,
-    #               max_epochs=150)
+        classifier = TextClassifier(document_embeddings,
+                                    label_dictionary=label_dict,
+                                    )
+
+        trainer = ModelTrainer(classifier, corpus)
+
+        trainer.train('adato/model/classifiers/flair/',
+                      learning_rate=0.1,
+                      mini_batch_size=32,
+                      anneal_factor=0.5,
+                      patience=5,
+                      max_epochs=40)
 
 
 if __name__ == '__main__':
