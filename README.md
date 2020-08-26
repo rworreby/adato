@@ -4,7 +4,7 @@ Allpurpose Document Annotation Tool for Active Learning
 
 ## Usage
 
-### Installation
+### Installation
 
 ```bash
 # Create your virtual environment and activate it
